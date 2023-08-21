@@ -15,6 +15,17 @@ spec:
       containers:
         - name: auth
           image: thibsashu/auth
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://auth-mongo-srv:27017/auth'
+              # Variable globale
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+                  # On met a disposition la clef des variables d environement secrets : JWT_KEY dans ce pod
+                  #Pour creer catte variable -> kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdf
 ---
 apiVersion: v1
 kind: Service
