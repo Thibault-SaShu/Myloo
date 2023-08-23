@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 import {User} from "../models/userModel";
 import jwt from 'jsonwebtoken';
+import {BadRequestError} from "../errors/bad-request-error";
 
 export const signup = async (req: Request, res: Response)=>{
     const {email, password} = req.body;
@@ -8,7 +9,7 @@ export const signup = async (req: Request, res: Response)=>{
     const existingUser = await User.findOne({email});
 
     if (existingUser) {
-        res.send("USer sill registred")
+        throw new BadRequestError('Email in use');
     }
 
     const user = User.build({email, password});
