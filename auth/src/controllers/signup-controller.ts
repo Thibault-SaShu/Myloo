@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
-import {User} from "../models/userModel";
+import {User} from "../models/user-model";
 import jwt from 'jsonwebtoken';
 import {BadRequestError} from "../errors/bad-request-error";
 

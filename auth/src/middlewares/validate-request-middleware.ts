@@ -6,7 +6,7 @@ import { RequestValidationError } from "../errors/request-validation-error";
  * Middleware to create an error when the body of the request is not validate
  *To use with the middleware "express-validator" before
  */
-export const validateRequest = (
+export const validateRequestMiddleware = (
     req: Request,
     res: Response,
     next: NextFunction
