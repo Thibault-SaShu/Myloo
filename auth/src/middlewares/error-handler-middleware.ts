@@ -10,8 +10,6 @@ export const errorHandlerMiddleware = (
     res: Response,
     next: NextFunction
 ) => {
-
-    console.log("Erreur")
     //If the error is a CustomError class instance, we send the message with the serializeErrors class method
     if (err instanceof CustomError) {
         return res.status(err.statusCode).send({ errors: err.serializeErrors() });
