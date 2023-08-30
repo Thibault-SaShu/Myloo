@@ -22,12 +22,12 @@ class Password {
      * Method to hash a password
      * @param storedPassword hashed password from the database
      * @param suppliedPassword password sent by the user to be logged in
-     * @returns {} true if the passwords corresponds
+     * @returns boolean true if the passwords corresponds
      */
     static async compare(storedPassword: string, suppliedPassword: string): Promise<boolean> {
         const [hashedPassword, salt] = storedPassword.split('.');
         const buf = (await scryptAsync(suppliedPassword, salt, 64)) as Buffer;
-
+        console.log(hashedPassword)
         return buf.toString('hex') === hashedPassword;
     }
 }
