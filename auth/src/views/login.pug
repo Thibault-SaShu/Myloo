@@ -1,0 +1,30 @@
+extends base
+
+block content
+    .background
+        .window
+            .login-content
+                .login-logo
+                    img.login-logo__img(src='./img/logo.png', alt='Myloo the dog')
+                form(class="login-form")
+                    .login-form__group
+                        label email
+                        input(id="email" type="text" placeholder="hello@email.com" required autofocus)
+                    .login-form__group
+                        label password
+                        input(id="password" type="password" placeholder="*********" required)
+
+                    button(class="login-btn") login
+
+            .wait-content
+                .loader
+                    .loader-1
+                    .loader-2
+
+        .popup
+            .popup-window
+                p.popup-text
+
+
+
+
