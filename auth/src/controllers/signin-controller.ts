@@ -1,9 +1,9 @@
 import {Request, Response} from "express";
 import {User} from "../models/user-model";
-import {BadRequestError} from "../errors/bad-request-error";
 import Password from "../utils/password";
 // @ts-ignore
 import jwt from "jsonwebtoken";
+import {BadRequestError} from "@myloo/commun";
 
 export const signin = async (req: Request, res: Response)=> {
     const { email, password } = req.body;

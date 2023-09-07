@@ -1,19 +1,18 @@
-import express, {json} from "express";
+import express from "express";
 import 'express-async-errors'; //For the Error Handler
 import cookieSession from 'cookie-session';
-import {userRouter} from "./routes/user-routes";
-import {errorHandlerMiddleware} from "./middlewares/error-handler-middleware";
-import {NotFoundError} from "./errors/not-found-error";
 import path from "path";
-import {viewRouter} from "./routes/view-route";
 
-const app = express()
-app.set('trust proxy', true); //Make Ingress and express compatible
-app.use(json()); //To parse JSON
+
+import {userRouter} from "./routes/user-routes";
+import {viewRouter} from "./routes/view-route";
+import {customExpressApp, errorHandlerMiddleware, NotFoundError} from "@myloo/commun";
+
+// Creation of express app with parsers and some security middlewares
+const app = customExpressApp()
 
 // Declare template engine
 app.set('view engine', 'pug');
-console.log(__dirname)
 app.set('views', path.join(__dirname, 'views'));
 
 // Serving static files
@@ -31,7 +30,7 @@ app.use('/api/users', userRouter)
 app.use('/auth', viewRouter)
 
 
-app.all('*', async (req, res) => {
+app.all('*', async () => {
     throw new NotFoundError();
 });
 

@@ -1,11 +1,10 @@
 import express from "express";
 import {signup} from "../controllers/signup-controller";
 import {body} from "express-validator";
-import {validateRequestMiddleware} from "../middlewares/validate-request-middleware";
 import {signout} from "../controllers/signout-controller";
 import {signin} from "../controllers/signin-controller";
 import {currentUser as currentUserController} from "../controllers/user-controller";
-import {currentUser} from "../middlewares/current-user-middleware";
+import {currentUser, validateRequestMiddleware} from "@myloo/commun";
 
 const router = express.Router();
 

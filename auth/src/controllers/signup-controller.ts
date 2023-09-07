@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 import {User} from "../models/user-model";
 import jwt from 'jsonwebtoken';
-import {BadRequestError} from "../errors/bad-request-error";
+import {BadRequestError} from "@myloo/commun";
 
 export const signup = async (req: Request, res: Response)=>{
     const {email, password} = req.body;
