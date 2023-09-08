@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ts-node-dev --poll src/server.ts",
     "test": "jest --watchAll --no-cache",
+    "coverage": "jest --coverage",
     "watch:js": "parcel watch ./src/public/js/main.js --out-dir ./src/public/js --out-file bundle.js",
     "build:js": "parcel build ./src/public/js/main.js --out-dir ./src/public/js --out-file bundle.js"
   },

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: companies-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: companies
+  template:
+    metadata:
+      labels:
+        app: companies
+    spec:
+      containers:
+        - name: companies
+          image: thibsashu/companies
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://companies-mongo-srv:27017/companies'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: companies-srv
+spec:
+  selector:
+    app: companies
+  ports:
+    - name: companies
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -3,7 +3,6 @@ import 'express-async-errors'; //For the Error Handler
 import cookieSession from 'cookie-session';
 import path from "path";
 
-
 import {userRouter} from "./routes/user-routes";
 import {viewRouter} from "./routes/view-route";
 import {customExpressApp, errorHandlerMiddleware, NotFoundError} from "@myloo/commun";

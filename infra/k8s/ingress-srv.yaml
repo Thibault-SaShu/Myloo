@@ -23,6 +23,14 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
+          - path: /api/company/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: companies-srv
+                port:
+                  number: 3000
+
           - path: /
             pathType: Prefix
             backend:

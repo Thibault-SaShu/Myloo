@@ -3,8 +3,9 @@ import {signup} from "../controllers/signup-controller";
 import {body} from "express-validator";
 import {signout} from "../controllers/signout-controller";
 import {signin} from "../controllers/signin-controller";
-import {currentUser as currentUserController} from "../controllers/user-controller";
+import {currentUser as getCurrentUser} from "../controllers/user-controller";
 import {currentUser, validateRequestMiddleware} from "@myloo/commun";
+import {describe} from "node:test";
 
 const router = express.Router();
 
@@ -38,7 +39,7 @@ router
         signin)
 
 router
-    .route("/currentuser")
-    .get(currentUser, currentUserController)
+    .route("/me")
+    .get(currentUser, getCurrentUser)
 
 export {router as userRouter}
