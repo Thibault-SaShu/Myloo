@@ -4,6 +4,7 @@ import request from 'supertest';
 import app from '../app';
 import jwt from 'jsonwebtoken';
 
+//Add signin to the global test scope
 declare global {
     var signin: () => string[];
 }
@@ -34,7 +35,9 @@ afterAll(async () => {
     await mongoose.connection.close();
 });
 
-//Creer un cookie factice
+/**
+ * global test method to create a fake JWT without call to the auth service
+ */
 global.signin = () => {
     // Build a JWT payload.  { id, email }
     const payload = {

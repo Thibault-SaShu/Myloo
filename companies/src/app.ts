@@ -21,8 +21,6 @@ app.all('*', async () => {
     throw new NotFoundError();
 });
 
-console.log("No Middle")
-
 //middlewares to manage and send errors to the front end
 app.use(errorHandlerMiddleware);
 

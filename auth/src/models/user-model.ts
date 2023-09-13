@@ -9,7 +9,6 @@ interface UserAttrs {
 interface UserDoc extends mongoose.Document {
     email: string;
     password: string;
-    authorisations : string[];
     isActive : boolean;
     isAdmin : boolean;
     lang : string;
@@ -30,10 +29,6 @@ const userSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true
-        },
-        authorisations: {
-            type: [Number],
-            default: [0,0,0,0,0,0,0],
         },
         isActive: {
             type: Boolean,
