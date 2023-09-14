@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface CompanyAttrs {
+interface MemberAttrs {
     id: string;
     name: string;
     phone?: string[];
@@ -13,9 +13,12 @@ interface CompanyAttrs {
     account?: string;
     iban?: string;
     bic?: string;
+    company: string;
+    status: number;
+    isActive: boolean;
 }
 
-interface CompanyDoc extends mongoose.Document {
+interface MemberDoc extends mongoose.Document {
     name: string;
     phone: string[];
     address: string[];
@@ -27,18 +30,20 @@ interface CompanyDoc extends mongoose.Document {
     account: string;
     iban: string;
     bic: string;
+    company: string;
+    status: number;
     createdAt : string;
     createdBy: string;
     updatedAt : string;
     updatedBy: string;
-
+    isActive: boolean;
 }
 
-interface CompanyModel extends mongoose.Model<CompanyDoc> {
-    build(attrs: CompanyAttrs): CompanyDoc;
+interface MemberModel extends mongoose.Model<MemberDoc> {
+    build(attrs: MemberAttrs): MemberDoc;
 }
 
-const companySchema = new mongoose.Schema(
+const memberSchema = new mongoose.Schema(
     {
         name: {
             type: String,
@@ -74,6 +79,17 @@ const companySchema = new mongoose.Schema(
         bic: {
             type: String,
         },
+        company: {
+            type: String,
+        },
+        status: {
+            type: Number,
+            default: 0,
+        },
+        isActive: {
+            type: Boolean,
+            default: true
+        },
         createdAt: {
             type: Date
         },
@@ -100,10 +116,10 @@ const companySchema = new mongoose.Schema(
     }
 );
 
-companySchema.statics.build = (attrs: CompanyAttrs) => {
-    return new Company(attrs);
+memberSchema.statics.build = (attrs: MemberAttrs) => {
+    return new Member(attrs);
 };
 
-const Company = mongoose.model<CompanyDoc, CompanyModel>('Company', companySchema);
+const Member = mongoose.model<MemberDoc, MemberModel>('Member', memberSchema);
 
-export { Company };
+export { Member };
