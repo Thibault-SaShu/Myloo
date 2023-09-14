@@ -1,7 +1,6 @@
 import 'express-async-errors'; //For the Error Handler
 import cookieSession from 'cookie-session';
 import {currentUser, customExpressApp, errorHandlerMiddleware, NotFoundError} from "@myloo/commun";
-import {companyRouter} from "./routes/company-routes";
 
 // Creation of express app with parsers and some security middlewares
 const app = customExpressApp()
@@ -14,7 +13,7 @@ app.use(
 );
 app.use(currentUser);
 
-app.use('/api/company', companyRouter)
+//app.use('/api/company', companyRouter)
 
 app.all('*', async () => {
     throw new NotFoundError();

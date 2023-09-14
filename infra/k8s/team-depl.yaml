@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: team-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: team
+  template:
+    metadata:
+      labels:
+        app: team
+    spec:
+      containers:
+        - name: team
+          image: thibsashu/team
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://team-mongo-srv:27017/team'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: team-srv
+spec:
+  selector:
+    app: team
+  ports:
+    - name: team
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
