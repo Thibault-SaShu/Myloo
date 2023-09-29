@@ -8,11 +8,16 @@ declare global {
     var signin: () => Promise<string[]>;
 }
 
+jest.mock('../utils/nats-wrapper-util');
+
+
 let mongo: any;
 
 //Before start tests
 beforeAll(async () => {
     process.env.JWT_KEY = 'qwertzuiopasdfghjklyxcvbnmqwertzuiopasdfgh';
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 
     //Create a MongoDB server for testing and mocking
     const mongo = await MongoMemoryServer.create();
@@ -23,6 +28,8 @@ beforeAll(async () => {
 
 //Before starting each test
 beforeEach(async () => {
+    jest.clearAllMocks();
+
     //we delete all collections in our Database
     const collections = await mongoose.connection.db.collections();
     for (let collection of collections) {
