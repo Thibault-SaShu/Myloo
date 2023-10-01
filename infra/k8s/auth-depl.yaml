@@ -36,7 +36,7 @@ spec:
                   #Pour creer catte variable -> kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asdf
 ---
 apiVersion: v1
-kind: Service
+kind: moduleId
 metadata:
   name: auth-srv
 spec:
