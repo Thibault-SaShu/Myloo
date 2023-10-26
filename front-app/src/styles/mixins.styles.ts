@@ -1,4 +1,5 @@
 import {css} from "styled-components";
+import {mainColor} from "./variables.styles.ts";
 
 /**
  * fixe the element on all the screen
@@ -26,6 +27,27 @@ export const pileChildren = css`
     justify-self: center;
     align-self: center;
   }
+`
+
+export const verticalScrollBar =css`
+    overflow-x: hidden;
+    overflow-y : auto;
+    scrollbar-width: 5px;
+    scrollbar-color: ${mainColor} transparent;
+
+&::-webkit-scrollbar {
+        width: 5px;
+    }
+
+&::-webkit-scrollbar-track {
+        background: transparent;
+        width: 2px;
+    }
+
+&::-webkit-scrollbar-thumb {
+        background-color: ${mainColor};
+        border-radius: 20px;
+    }
 `
 
 

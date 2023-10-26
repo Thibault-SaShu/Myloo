@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 interface CompanyAttrs {
     id: string;
     name: string;
+    email: string;
     phone?: string[];
     address?: string[];
     zip?: string;
@@ -17,6 +18,7 @@ interface CompanyAttrs {
 
 interface CompanyDoc extends mongoose.Document {
     name: string;
+    email: string;
     phone: string[];
     address: string[];
     zip: string;
@@ -43,6 +45,9 @@ const companySchema = new mongoose.Schema(
         name: {
             type: String,
             required: true
+        },
+        email: {
+            type: String,
         },
         phone: {
             type: [String]

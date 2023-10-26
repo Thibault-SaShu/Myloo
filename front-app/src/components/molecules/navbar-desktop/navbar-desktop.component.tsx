@@ -1,132 +1,108 @@
-import {NavbarLeftContainer, NavbarMainContainer, NavbarRightContainer} from "./navbar.styles.ts";
-import NavbarButton, {NavbarButtonEvent} from "../../atoms/buttons/navbar-button/navbar-button.component.tsx";
-import {CSSProperties, FunctionComponent, PropsWithChildren, useEffect, useRef, useState} from "react";
+import {CSSProperties, FunctionComponent, PropsWithChildren, useMemo, useState} from "react";
 import {NavbarButtonDescription} from "../../organisms/navbar/navbar.list.tsx";
+import {ModulesID} from "../../organisms/navbar/navbar.component.tsx";
+import NavbarButton, {NavbarButtonEvent} from "../../atoms/buttons/navbar-button/navbar-button.component.tsx";
+import {
+    NavbarDesktopLeftContainer,
+    NavbarDesktopMainContainer, NavbarDesktopRightContainer,
 
-enum NAVBAR_STATUS {
-    single,
-    left,
-    right
-}
+} from "./navbar-desktop.styles.ts";
 
-type navbarStyleObject = () => {
-    left : CSSProperties,
-    right : CSSProperties
-}
 
 type NavbarProps = PropsWithChildren<{
-    buttonsList :  NavbarButtonDescription[]
-
+    buttonsList :  NavbarButtonDescription[],
+    currentModulesId :  ModulesID,
+    onChangeModulesId : (modulesID : ModulesID)=>void
 }>
 
-const fullNavbarStyle : CSSProperties = {
-    transform : 'scale(1)',
-    display : "flex"
-}
+type BarStyleType = {simple: CSSProperties, duo:CSSProperties, hover: CSSProperties}
 
-const smallNavbarStyle : CSSProperties = {
-    transform : 'scale(0.4)',
-    display : "flex"
-}
-
-const bigNavbarStyle : CSSProperties = {
-    transform : 'scale(0.6' +
-        ')',
-    display : "flex"
-}
-
-const noNavbarStyle : CSSProperties = {
-    transform : 'scale(0)',
-    display : "none"
-}
-
-
-
-const NavbarDesktop:FunctionComponent<NavbarProps> = ({buttonsList}) =>{
-
-    const [navbarStatus, setNavbarStatus] = useState<NAVBAR_STATUS>(NAVBAR_STATUS.single)
-    const [currentModuleId, setCurrentModuleId] = useState<number>(0)
-
-    const leftRef = useRef<null | HTMLDivElement>(null);
-    const rightRef = useRef<null | HTMLDivElement>(null);
-
-    const getNavbarStyles : navbarStyleObject = () =>{
-       switch (navbarStatus){
-           case NAVBAR_STATUS.single :
-               return {left: fullNavbarStyle, right: noNavbarStyle}
-           case NAVBAR_STATUS.right :
-               return {left: smallNavbarStyle, right: bigNavbarStyle}
-           default:
-               return {left: bigNavbarStyle, right: smallNavbarStyle}
-       }
+const leftBarStyle : BarStyleType  = {
+    simple: {
+        transform: "scale(.8) translateX(15%)",
+        opacity: 1
+    },
+    duo: {
+        transform: "scale(.4)",
+        opacity: 1
+    },
+    hover: {
+        transform: "scale(.6)"
     }
+}
 
-    console.log("Rerender")
-    const secondBarList = buttonsList[currentModuleId].secondBar
-
-    const onClickHandler = (e : NavbarButtonEvent) =>{
-        setCurrentModuleId(e.moduleId ?? currentModuleId)
+const rightBarStyle : BarStyleType  = {
+    simple: {
+        transform : 'scale(0)',
+        opacity: 0    },
+    duo: {
+        transform: "scale(.6)",
+        opacity: 1,
+        display : "flex"
+    },
+    hover: {
+        transform: "scale(.4)",
+        display : "flex",
+        opacity: 1,
     }
+}
 
-    useEffect (()=>{
+const NavbarDesktop:FunctionComponent<NavbarProps> = ({buttonsList,currentModulesId, onChangeModulesId}) =>{
 
-        if (navbarStatus !== NAVBAR_STATUS.single){
-            const handleOverLeft = () => {
-                    setNavbarStatus(NAVBAR_STATUS.left)
-            };
+    const secondBarList = useMemo(()=>buttonsList[currentModulesId.main].secondBar, [currentModulesId])
+    const [hover, setHover] = useState(false);
 
-            const handleOverRight = () => {
-                    setNavbarStatus(NAVBAR_STATUS.right)
-            };
-
-            leftRef.current?.addEventListener("mouseover",handleOverLeft )
-            rightRef.current?.addEventListener("mouseover",handleOverRight )
-
-            return ()=>{
-                leftRef.current?.removeEventListener("mouseover",handleOverLeft )
-                rightRef.current?.removeEventListener("mouseover",handleOverRight )
-            }
-
+    const onClickMainBarHandler = (e : NavbarButtonEvent) =>{
+        if (e && e.moduleId !== undefined){
+            onChangeModulesId({...currentModulesId, main : e.moduleId})
         }
-    },[navbarStatus])
-
-    useEffect(()=>{
-        if (secondBarList){
-            setNavbarStatus(NAVBAR_STATUS.left)
-        } else {
-            setNavbarStatus(NAVBAR_STATUS.single)
-        }
-
-    },[currentModuleId])
+    }
 
     return (
-        <NavbarMainContainer>
-            <NavbarLeftContainer style={getNavbarStyles().left} ref={leftRef}>
+        <NavbarDesktopMainContainer>
+            <NavbarDesktopLeftContainer
+                onMouseEnter={()=>{
+                    setHover(true);
+                }}
+                onMouseLeave={()=>{
+                    setHover(false);
+                }}
+                style={{
+                ...leftBarStyle.simple,
+                    ...(secondBarList && !hover ? leftBarStyle.duo : null),
+                    ...(secondBarList && hover? leftBarStyle.hover : null)
+            }}>
                 {buttonsList.map((e, i) =>
-                    <NavbarButton onClick={onClickHandler}
+                    <NavbarButton onClick={onClickMainBarHandler}
                                   moduleId={i}
                                   icon={e.icon}
                                   iconHover={e.iconHover}
                                   text={e.text}
                                   link={e.link}
+                                  selected={i === currentModulesId.main}
                                   key={i}/>
                 )}
-            </NavbarLeftContainer>
+            </NavbarDesktopLeftContainer>
 
-
-            <NavbarRightContainer style={getNavbarStyles().right} ref={rightRef}>
+            <NavbarDesktopRightContainer
+                style={{
+                    ...rightBarStyle.simple,
+                    ...(secondBarList && !hover ? rightBarStyle.duo : null),
+                    ...(secondBarList && hover? rightBarStyle.hover : null)
+                }}
+            >
                 {secondBarList && secondBarList.map((e, i) =>
-                    <NavbarButton onClick={onClickHandler}
+                    <NavbarButton onClick={onClickMainBarHandler}
                                   moduleId={i}
                                   icon={e.icon}
                                   iconHover={e.iconHover}
                                   text={e.text}
                                   link={e.link}
+                                  selected={i === currentModulesId.second}
                                   key={i}/>
                 )}
-            </NavbarRightContainer>
-
-        </NavbarMainContainer>
+            </NavbarDesktopRightContainer>
+        </NavbarDesktopMainContainer>
     )
 }
 

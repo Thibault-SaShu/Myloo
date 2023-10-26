@@ -5,7 +5,6 @@ import {signout} from "../controllers/signout-controller";
 import {signin} from "../controllers/signin-controller";
 import {currentUser as getCurrentUser} from "../controllers/user-controller";
 import {currentUser, validateRequestMiddleware} from "@myloo/commun";
-import {describe} from "node:test";
 
 const router = express.Router();
 

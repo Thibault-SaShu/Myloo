@@ -14,8 +14,8 @@ const validationArrayRequired =
     [
         body("name")
             .trim()
-            .isLength({ min: 1, max: 30 })
-            .withMessage("Company must have a name with a maximum of 30 characters")
+            .isLength({ min: 1, max: 50 })
+            .withMessage("Company must have a name with a maximum of 50 characters")
     ]
 
 const validationArrayForUpdate =
@@ -23,11 +23,17 @@ const validationArrayForUpdate =
         body("name")
             .trim()
             .optional()
-            .isLength({ min: 1, max: 30 })
-            .withMessage("Company must have a name with a maximum of 30 characters")
+            .isLength({ min: 1, max: 50 })
+            .withMessage("Company must have a name with a maximum of 50 characters")
     ]
 
 const validationArrayOptional =  [
+    body("email")
+        .optional()
+        .isEmail()
+        .isLength({ min: 1, max: 50 })
+        .withMessage("It is not an email"),
+
     body("phone")
         .optional()
         .isArray({min: 1, max: 5})
